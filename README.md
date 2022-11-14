@@ -19,25 +19,18 @@ Kendala:
   - [Daftar Isi](#daftar-isi)
   - [Topologi](#topologi)
   - [Config](#config)
-  - [Sebelum Memulai](#sebelum-memulai)
 - [Soal 1](#soal-1)
 - [Soal 2](#soal-2)
-    - [Test](#test)
 - [Soal 3](#soal-3)
     - [Script](#script)
-    - [Test](#test-1)
 - [Soal 4](#soal-4)
     - [Script](#script-1)
-    - [Test](#test-2)
 - [Soal 5](#soal-5)
     - [Script](#script-2)
-    - [Test](#test-3)
 - [Soal 6](#soal-6)
     - [Script](#script-3)
-    - [Test](#test-4)
 - [Soal 7](#soal-7)
     - [Script](#script-4)
-    - [Test](#test-5)
 
 
 ## Topologi
@@ -256,3 +249,64 @@ Untuk menjalankannya bisa langsung dengan melakukan command `bash berlint-proxy.
     ```
 
 Setelah selesai maka kita harus merestart bind9 dengan command `service bind9 restart` atau jalankan command `bash wise-5.sh`
+
+# Soal 6
+>  Lama waktu DHCP server meminjamkan alamat IP kepada Client yang melalui Switch1 selama 5 menit sedangkan pada client yang melalui Switch3 selama 10 menit. Dengan waktu maksimal yang dialokasikan untuk peminjaman alamat IP selama 115 menit.
+
+### Script
+
+> Script dibawah ini dapat dijalankannya dengan melakukan command `nano /etc/dhcp/dhcpd,conf` dengan mengganti `default-lease-time` pada switch1 selama 5 menit = 300s, dan pada switch2 selama 10 menit = 600s. Dan untuk `max-lease-time` diganti menjadi 115 menit = 6900s
+
+- **Westalis**
+    
+    ```
+    subnet 192.202.1.0 netmask 255.255.255.0 {
+        range 192.202.1.50 192.202.1.88;
+        range 192.202.1.120 192.202.1.155;
+        option routers 192.202.1.1;
+        option broadcast-address 192.202.1.255;
+        option domain-name-servers 192.202.2.2;
+        default-lease-time 300;
+        max-lease-time 6900;
+    }
+    subnet 192.202.3.0 netmask 255.255.255.0 {
+        range 192.202.3.10 192.202.3.30;
+        range 192.202.3.60 192.202.3.85;
+        option routers 192.202.3.1;
+        option broadcast-address 192.202.3.255;
+        option domain-name-servers 192.202.2.2;
+        default-lease-time 600;
+        max-lease-time 6900;
+    }
+    ```
+
+Setelah selesai maka kita harus merestart dengan menjalankan command bash `westalis-3-6.sh`.
+
+# Soal 7
+> Loid dan Franky berencana menjadikan **Eden** sebagai server untuk pertukaran informasi dengan **alamat IP yang tetap** dengan IP [prefix IP].3.13
+
+### Script
+
+> Script dibawah ini terdapat pada **root node Westalis**, untuk menjalankannya bisa langsung dengan melakukan command `bash nomor7.sh`
+
+- **Westalis**
+    
+    ```
+    echo "
+    host Eden{
+        hardware ethernet 92:b2:9e:53:d4:b0;
+        fixed-address 10.19.3.13;
+    }" >> etc/dhcp/dhcpd.conf
+    ```
+
+> Script dibawah ini terdapat pada **root node Eden**, untuk menjalankannya bisa langsung dengan melakukan command `bash nomor7.sh`
+
+- **Eden**
+
+    ```
+    echo "
+    auto eth0
+    iface eth0 inet dhcp
+    hardware ethernet 92:b2:9e:53:d4:b0 " > etc/network/interfaces
+    ```
+
