@@ -173,7 +173,7 @@ Untuk menjalankannya bisa langsung dengan melakukan command `bash berlint-proxy.
 
 ### Script
 
-> Script dibawah ini terdapat pada **root node Westalis**, untuk menjalankannya bisa langsung dengan melakukan command `bash nomor3.sh`
+> Script dibawah ini terdapat pada **root node Westalis**, mengganti range IP Switch1 sesuai pada soal, yaitu prefix IP = 10.19, untuk menjalankannya bisa langsung dengan melakukan command `bash nomor3.sh`
 
 - **Westalis**
     
@@ -200,7 +200,7 @@ Untuk menjalankannya bisa langsung dengan melakukan command `bash berlint-proxy.
 
 ### Script
 
-> Script dibawah ini terdapat pada **root node Westalis**, untuk menjalankannya bisa langsung dengan melakukan command `bash nomor4.sh`
+> Script dibawah ini terdapat pada **root node Westalis**, mengganti range IP Switch3 sesuai pada soal, yaitu prefix IP = 10.19, untuk menjalankannya bisa langsung dengan melakukan command `bash nomor4.sh`
 
 - **Westalis**
     
