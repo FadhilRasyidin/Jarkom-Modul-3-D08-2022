@@ -125,3 +125,128 @@ Kendala:
         netmask 255.255.255.0
         gateway 10.19.3.1
     ```
+    
+    setiap node, kita inisiasi pada `.bashrc` menggunakan `nano`. Setelah berhasil, akan dilakukan pengecekan internet untuk semua node dengan melakukan `ping google.com -c 3`
+
+# Soal 1
+> Loid bersama Franky berencana membuat peta tersebut dengan kriteria WISE sebagai DNS Server, Westalis sebagai DHCP Server, Berlint sebagai Proxy Server 
+
+**WISE sebagai DNS Server** 
+
+    ```
+    apt-get update
+    apt-get install bind9 -y
+    service bind9 start
+    service bind9 status
+    ```
+**Westalis sebagai DHCP Server** 
+
+    ```
+    apt-get update
+    apt-get install isc-dhcp-server -y
+    ```
+**Berlint sebagai Proxy Server** 
+
+    ```
+    apt-get update
+    apt-get install squid -y
+    service squid restart
+    service squid status
+    ```
+
+
+# Soal 2
+> Ostania sebagai DHCP Relay
+
+**Ostania sebagai DHCP Relay** 
+
+    ```
+    apt-get update
+    apt-get install isc-dhcp-relay -y
+    ```
+
+
+# Soal 3
+> Ada beberapa kriteria yang ingin dibuat oleh Loid dan Franky, yaitu:
+> 1.	Semua client yang ada HARUS menggunakan konfigurasi IP dari DHCP Server.
+> 2.	Client yang melalui Switch1 mendapatkan range IP dari [prefix IP].1.50 - [prefix IP].1.88 dan [prefix IP].1.120 - [prefix IP].1.155 
+ 
+
+### Script
+
+> Script dibawah ini terdapat pada **root node Westalis**, untuk menjalankannya bisa langsung dengan melakukan command `bash nomor3.sh`
+
+- **Westalis**
+    
+    ```
+    echo "
+    subnet 10.19.2.0 netmask 255.255.255.0 {
+    }
+    subnet 10.19.1.0 netmask 255.255.255.0 {
+        range 10.19.1.50 10.19.1.88;
+        range 10.19.1.120 10.19.1.155;
+        option routers 10.19.1.1;
+        option broadcast-address 10.19.1.255;
+        option domain-name-servers 10.19.2.2;
+        default-lease-time 360;
+        max-lease-time 7200;
+    }
+
+    " > /etc/dhcp/dhcpd.conf
+    
+    ```
+
+# Soal 4
+> Client yang melalui Switch3 mendapatkan range IP dari [prefix IP].3.10 - [prefix IP].3.30 dan [prefix IP].3.60 - [prefix IP].3.85
+
+### Script
+
+> Script dibawah ini terdapat pada **root node Westalis**, untuk menjalankannya bisa langsung dengan melakukan command `bash nomor4.sh`
+
+- **Westalis**
+    
+    ```
+    echo "
+    subnet 10.19.3.0 netmask 255.255.255.0 {
+    }
+    subnet 10.19.1.0 netmask 255.255.255.0 {
+        range 10.19.3.10 10.19.3.30;
+        range 10.19.3.60 10.19.3.85;
+        option routers 10.19.3.1;
+        option broadcast-address 10.19.3.255;
+        option domain-name-servers 10.19.2.2;
+        default-lease-time 720;
+        max-lease-time 7200;
+    }" >> /etc/dhcp/dhcpd.conf
+    
+    ```
+
+# Soal 5
+> Client mendapatkan DNS dari WISE dan client dapat terhubung dengan internet melalui DNS tersebut
+
+### Script
+
+> Script dibawah ini terdapat pada **root node WISE**, untuk menjalankannya bisa langsung dengan melakukan command `bash nomor5.sh`
+
+- **WISE**
+    
+    ```
+    echo -e '
+    options {
+        directory \"/var/cache/bind\";
+
+        forwarders {
+            8.8.8.8;
+            8.8.8.4;
+        };
+
+        // dnssec-validation auto;
+    allow-query{ any; };
+    auth-nxdomain no; # confirm to RFC1035
+    listen-on-v6 { any; };
+    }
+    };" > /etc/bind/named.conf.options
+
+    ```
+
+Setelah selesai maka kita harus merestart bind9 dengan command `service bind9 restart` atau jalankan command `bash wise-5.sh`
