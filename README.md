@@ -133,6 +133,8 @@ Kendala:
 
 **WISE sebagai DNS Server** 
 
+Untuk menjalankannya bisa langsung dengan melakukan command `bash wise-dns.sh`
+
     ```
     apt-get update
     apt-get install bind9 -y
@@ -141,11 +143,15 @@ Kendala:
     ```
 **Westalis sebagai DHCP Server** 
 
+Untuk menjalankannya bisa langsung dengan melakukan command `bash westalis-dhcp.sh`
+
     ```
     apt-get update
     apt-get install isc-dhcp-server -y
     ```
 **Berlint sebagai Proxy Server** 
+
+Untuk menjalankannya bisa langsung dengan melakukan command `bash berlint-proxy.sh`
 
     ```
     apt-get update
